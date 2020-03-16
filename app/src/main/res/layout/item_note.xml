@@ -5,6 +5,9 @@
         <variable
             name="note"
             type="com.example.notesmasteer.model.Note" />
+        <variable
+            name="callback"
+            type="com.example.notesmasteer.callback.NoteCallBack" />
     </data>
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -13,6 +16,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/ContraitLayout"
+            android:onClick="@{()->callback.onNoteClick(note)}"
             android:padding="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -45,7 +50,7 @@
                 android:text="@{note.timeCreate}"
                 android:gravity="start"
                 android:textColor="@color/colorActionbar"
-                android:textSize="@dimen/textview_size_conten"
+                android:textSize="@dimen/textview_size_small_conten"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tvContent" />
         </androidx.constraintlayout.widget.ConstraintLayout>

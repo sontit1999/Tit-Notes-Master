@@ -1,5 +1,7 @@
 package com.example.notesmasteer.fragment.home;
 
+import android.content.Context;
+import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
@@ -23,19 +25,30 @@ import androidx.room.Room;
 
 import com.example.notesmasteer.R;
 import com.example.notesmasteer.base.BaseFragment;
+import com.example.notesmasteer.callback.CircleMenuCallback;
+import com.example.notesmasteer.callback.NoteCallBack;
 import com.example.notesmasteer.callback.NoteDao;
 import com.example.notesmasteer.databinding.FragHomeBinding;
 import com.example.notesmasteer.model.AppDatabase;
 import com.example.notesmasteer.model.Note;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HomeFragment extends BaseFragment<FragHomeBinding,HomeViewModel> {
+    ArrayList<Note> listNote;
     NoteDao noteDao;
     AppDatabase database;
     private static final int TIME_DELAY = 3000;
-    NavController controller;
+    CircleMenuCallback menuCallback;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        menuCallback = (CircleMenuCallback) context;
+    }
+
     @Override
     public Class<HomeViewModel> getViewmodel() {
         return HomeViewModel.class;
@@ -49,13 +62,11 @@ public class HomeFragment extends BaseFragment<FragHomeBinding,HomeViewModel> {
     @Override
     public void setBindingViewmodel() {
          binding.setViewmodel(viewmodel);
-         controller = NavHostFragment.findNavController(this);
          initDatabase();
          initRecyclerviewNote();
     }
 
     private void initRecyclerviewNote() {
-        binding.rvNotes.setHasFixedSize(true);
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, LinearLayoutManager.VERTICAL);
         binding.rvNotes.setLayoutManager(staggeredGridLayoutManager);
         binding.rvNotes.setAdapter(viewmodel.noteAdapter);
@@ -67,64 +78,88 @@ public class HomeFragment extends BaseFragment<FragHomeBinding,HomeViewModel> {
                 .allowMainThreadQueries()
                 .build();
         noteDao = database.getNoteDAO();
-        addSampleNoteToDatabase();
+      //  addSampleNoteToDatabase();
     }
 
     @Override
     public void ViewCreated() {
-        // add animation textview and remove splash after 3s
-        Animation animationTextView = AnimationUtils.loadAnimation(getContext(),R.anim.bounce_animation);
-        binding.tvLogo.startAnimation(animationTextView);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-               binding.rlSplash.setVisibility(View.GONE);
-            }
-        },TIME_DELAY);
         event();
         // quan sát listnote trong viewmodel
         viewmodel.getListNote().observe(this, new Observer<ArrayList<Note>>() {
             @Override
             public void onChanged(ArrayList<Note> notes) {
                 viewmodel.noteAdapter.setList(notes);
+                viewmodel.noteAdapter.setCallBack(new NoteCallBack() {
+                    @Override
+                    public void onNoteClick(Note note) {
+                        Bundle bundle = new Bundle();
+                        bundle.putSerializable("note",note);
+                        getController().navigate(R.id.action_HomeFragment_to_EditFragment,bundle);
+                    }
+                });
             }
         });
         getNote();
     }
 
     private void getNote() {
-        viewmodel.setListNote((ArrayList<Note>) noteDao.getItems());
+        listNote = (ArrayList<Note>) noteDao.getItems();
+        Collections.reverse(listNote);
+        viewmodel.setListNote(listNote);
     }
 
     private void event() {
-        binding.searchView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                noteDao.deleteAllNote();
-            }
-        });
         binding.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
+                searchNote(query);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                Toast.makeText(getActivity(), newText, Toast.LENGTH_SHORT).show();
+                searchNote(newText);
                 return false;
             }
         });
+        binding.searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                menuCallback.hiddenMenuCircle(false);
+                return false;
+            }
+        });
+        binding.searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                menuCallback.hiddenMenuCircle(true);
+            }
+        });
+        // lắng nghe searchview focus or not
+        binding.searchView.setOnQueryTextFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(b){
+                    menuCallback.hiddenMenuCircle(true);
+                }else{
+                    menuCallback.hiddenMenuCircle(false);
+                }
+            }
+        });
     }
-    public void addSampleNoteToDatabase(){
-        noteDao.insert(new Note("aMục tiêu khi ra trường","Đến khi ra trường phải đạt dc mức lương khởi điểm là 10tr :D chayzo","9:13 PM 15/3/2020","9:13 PM 15/6/2021"));
-        noteDao.insert(new Note("Mục tiêu khi ra trường","Đến khidc mức lương khởi điểm là 10tr :D chayzo","9:13 PM 15/3/2020","9:13 PM 15/6/2021"));
-        noteDao.insert(new Note("Mục tiêu khi ra trường","Đến khng khởi điểm là 10tr :D chayzo","9:13 PM 15/3/2020","9:13 PM 15/6/2021"));
-        noteDao.insert(new Note("Mục tiêu khi ra trường","Đến khi ra trường phải đạt dc mức lương khởi điểm là 10tr :D chayzo","9:13 PM 15/3/2020","9:13 PM 15/6/2021"));
-        noteDao.insert(new Note("Mục tiêu khi ra trường","Đến khi ra trường phải đạt dc mức lương khởi điểm là 10tr :D chayzo","9:13 PM 15/3/2020","9:13 PM 15/6/2021"));
-        noteDao.insert(new Note("Mục tiêu khi ra trường","Đến khi ra trư0tr :D chayzo","9:13 PM 15/3/2020","9:13 PM 15/6/2021"));
-        noteDao.insert(new Note("Mục tiêu khi ra trường","Đến khi ra trường phải đạt dc mức lương khởi điểm là 10tr :D chayzo","9:13 PM 15/3/2020","9:13 PM 15/6/2021"));
-        noteDao.insert(new Note("Mục tiêu khi ra trường","Đến khiơng khởi điểm là 10tr :D chayzo","9:13 PM 15/3/2020","9:13 PM 15/6/2021"));
-        noteDao.insert(new Note("Mục tiêu khi ra trường","Đến khi ra trường phải đạt dc mức lương khởi điểm là 10tr :D chayzo","9:13 PM 15/3/2020","9:13 PM 15/6/2021"));
+
+    private void searchNote(String query) {
+        ArrayList<Note> arrResult = new ArrayList<>();
+        for(Note i : listNote){
+            if(i.getContent().contains(query)){
+                arrResult.add(i);
+            }
+        }
+        viewmodel.setListNote(arrResult);
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        menuCallback.hiddenMenuCircle(false);
     }
 }

@@ -33,27 +33,5 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/searchView" />
-        <RelativeLayout
-            android:id="@+id/rlSplash"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <ImageView
-                android:id="@+id/ivSplash"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@drawable/splash2" />
-
-            <TextView
-                android:id="@+id/tvLogo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/boogaloo"
-                android:gravity="center"
-                android:text="@string/logo"
-                android:textColor="@color/colorActionbar"
-                android:textSize="@dimen/textview_size_big_title"
-                android:textStyle="bold" />
-        </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
