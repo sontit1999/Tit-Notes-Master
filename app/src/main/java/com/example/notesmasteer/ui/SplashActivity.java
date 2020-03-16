@@ -20,10 +20,10 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        tvLogo = (TextView) findViewById(R.id.tvLogo) ;
-        // add animation textview and remove splash after 3s
-        Animation animationTextView = AnimationUtils.loadAnimation(SplashActivity.this,R.anim.bounce_animation);
-        tvLogo.startAnimation(animationTextView);
+//        tvLogo = (TextView) findViewById(R.id.tvLogo) ;
+//        // add animation textview and remove splash after 3s
+//        Animation animationTextView = AnimationUtils.loadAnimation(SplashActivity.this,R.anim.bounce_animation);
+//        tvLogo.startAnimation(animationTextView);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {

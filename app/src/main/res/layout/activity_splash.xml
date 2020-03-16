@@ -18,17 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
-            android:src="@drawable/splash2" />
-
-        <TextView
-            android:id="@+id/tvLogo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fontFamily="@font/boogaloo"
-            android:gravity="center"
-            android:text="@string/logo"
-            android:textColor="#AED581"
-            android:textSize="@dimen/textview_size_big_title"
-            android:textStyle="bold" />
+            android:src="@drawable/splash" />
     </RelativeLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

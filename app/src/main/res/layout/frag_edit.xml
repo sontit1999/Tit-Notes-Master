@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <data>
         <variable
             name="viewmodel"
@@ -9,11 +10,20 @@
             type="com.example.notesmasteer.model.Note" />
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/containerEdit"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bg1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
         <RelativeLayout
             android:id="@+id/actionBar"
             android:layout_width="match_parent"
@@ -60,6 +70,7 @@
         <TextView
             android:id="@+id/tvTime"
             android:text="@{note.timeCreate}"
+            android:layout_margin="15dp"
             android:textSize="@dimen/textview_size_conten"
             android:padding="@dimen/padding_Frag_edit"
             app:layout_constraintTop_toBottomOf="@id/actionBar"
@@ -67,6 +78,7 @@
             android:layout_height="wrap_content"/>
         <LinearLayout
             android:id="@+id/llTitle"
+            android:layout_margin="15dp"
             app:layout_constraintTop_toBottomOf="@id/tvTime"
             android:orientation="horizontal"
             android:layout_width="match_parent"
@@ -96,6 +108,7 @@
             android:padding="@dimen/padding_Frag_edit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/llTitle">

@@ -75,6 +75,11 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,MainViewModel
 
             @Override
             public void onButtonClickAnimationStart(@NonNull CircleMenuView view, int index) {
+
+            }
+
+            @Override
+            public void onButtonClickAnimationEnd(@NonNull CircleMenuView view, int index) {
                 Log.d("D", "onButtonClickAnimationStart| index: " + index);
                 switch (index){
                     case 0 :
@@ -93,15 +98,10 @@ public class MainActivity extends BaseActivity<ActivityMainBinding,MainViewModel
                         Toast.makeText(MainActivity.this, "navigate fragment list notification", Toast.LENGTH_SHORT).show();
                         break;
                     case 5:
-                        binding.passcodeView.setPasscodeType(PasscodeView.PasscodeViewType.TYPE_SET_PASSCODE);
                         binding.passcodeView.setVisibility(View.VISIBLE);
+                        binding.passcodeView.setPasscodeType(PasscodeView.PasscodeViewType.TYPE_SET_PASSCODE);
                         break;
                 }
-            }
-
-            @Override
-            public void onButtonClickAnimationEnd(@NonNull CircleMenuView view, int index) {
-                Log.d("D", "onButtonClickAnimationEnd| index: " + index);
             }
         });
         binding.passcodeView.setListener(new PasscodeView.PasscodeViewListener() {

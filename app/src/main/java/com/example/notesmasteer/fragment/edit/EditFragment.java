@@ -21,6 +21,7 @@ import com.example.notesmasteer.base.BaseFragment;
 import com.example.notesmasteer.callback.CircleMenuCallback;
 import com.example.notesmasteer.callback.NoteDao;
 import com.example.notesmasteer.databinding.FragEditBinding;
+import com.example.notesmasteer.fragment.bottomsheet.BackgroundBottomSheetFragment;
 import com.example.notesmasteer.model.AppDatabase;
 import com.example.notesmasteer.model.Note;
 
