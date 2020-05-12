@@ -18,10 +18,21 @@
         </activity>
         <activity android:name=".MainActivity">
         </activity>
-
+        <receiver
+            android:name=".service.AlarmReciever"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+        <service
+            android:enabled="true"
+            android:exported="false"
+            android:name=".service.SoundService"></service>
     </application>
 
 </manifest>
